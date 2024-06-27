@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  django:
+    container_name: predictcare_django
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspaces
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    # command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    # network_mode: service:db
+
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+
+  db:
+    container_name: predictcare_postgres
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  mail:
+    container_name: predictcare_mail
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+volumes:
+  pgdata: {}
