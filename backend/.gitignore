@@ -1,4 +1,4 @@
 .env
-/shared/tenant_app/migrations/
-/shared/user_app/migrations/
-/tenant/shop_app/migrations
+**/migrations/
+**/__pycache__
+
