@@ -1,12 +1,11 @@
 import "./App.css";
-import Button from "@mui/material/Button";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
     <>
-      <Button variant="contained" color="primary">
-        Hello World
-      </Button>
+      <LoginPage/>
+     
     </>
   );
 }
