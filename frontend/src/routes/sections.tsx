@@ -36,7 +36,15 @@ const Router = () => {
                 {element: <IndexPage />, index: true},
                 {path: 'hearth', element: <HearthPage />},
                 {path: 'lung', element: <LungPage />},
-                {path: 'users', element: <UsersPage />},
+                {
+                    path: 'users',
+                    children: [
+                        { element: <UsersPage />, index: true },
+                        // { path: 'list', element: <UsersListPage /> },
+                        // { path: 'edit', element: <UsersEditPage /> },
+                    ],
+                },
+                
             ],
         },
         {

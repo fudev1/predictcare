@@ -6,10 +6,7 @@ interface DashBoardLayoutProps {
 
 const DashBoardLayout = ({ children }: DashBoardLayoutProps) => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      {children}
-    </div>
+    <div>{children}</div>
   )
 }
 
