@@ -1,7 +1,8 @@
 import { Box, Typography, Container, Paper, Stack, Link, Alert, TextField, Button, AppBar, AlertTitle, Toolbar } from "@mui/material";
-import App from "../App";
 
 
+
+    
 
 const LoginPage = () => {
   return (
@@ -9,7 +10,7 @@ const LoginPage = () => {
         <Box display={"flex"} minHeight={"100vh"}>
 
 
-            <AppBar position={"sticky"} >
+            <AppBar color="secondary" position={"sticky"} >
                 {/* <Alert severity="success">This is a success Alert.</Alert> */}
                 <Toolbar>
                     <Container>
@@ -17,6 +18,7 @@ const LoginPage = () => {
                         <Box>
                             <Link href={"#"}>Test</Link>
                         </Box>
+                        <Button> JIJIJI </Button>
                     </Container>
 
                 </Toolbar>
