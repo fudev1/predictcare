@@ -1,25 +1,27 @@
 // 💡 Hook personnalisé pour pouvoir utiliser les fonctions de navigation dans plusieurs composants
 
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { RouterLinkProps } from "../../interfaces/router-link-props";
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RouterLinkProps } from '../../interfaces/router-link-props';
 
 const useRouter = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const router = useMemo(() => ({
-        back: () => navigate(-1),
-        forward: () => navigate(1),
-        reload: () => navigate(0),
-        push: (href: RouterLinkProps) => navigate(href.path),
-        replace: (href: RouterLinkProps) => navigate(href.path, { replace: true }),
-    }), [navigate]);
+  const router = useMemo(
+    () => ({
+      back: () => navigate(-1),
+      forward: () => navigate(1),
+      reload: () => navigate(0),
+      push: (href: RouterLinkProps) => navigate(href.path),
+      replace: (href: RouterLinkProps) => navigate(href.path, { replace: true }),
+    }),
+    [navigate]
+  );
 
-    return router;
-}
+  return router;
+};
 
 export { useRouter };
-
 
 // --------------------------------------------------------------------------------------
 
@@ -58,5 +60,3 @@ export { useRouter };
 //         </div>
 //     )
 // }
-
-

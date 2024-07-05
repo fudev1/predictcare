@@ -6,11 +6,13 @@
 // 💡 Définir les routes principales de l'application en utilisant useRoutes de React Router
 // 💡 `DashboardLayout` : Enveloppe les routes protégées pour inclure le menu latéral
 
+import { lazy, Suspense } from 'react';
+import { Outlet, useRoutes, Navigate } from 'react-router-dom';
+import { ReactNode } from 'react';
+// import { useAuth } from '../hooks/useAuth';
 
-import { lazy, Suspense } from "react";
-import { Outlet, useRoutes, Navigate } from "react-router-dom";
-
-import DashBoardLayout from "../layouts/DashBoardLayout";
+import DashBoardLayout from '../layouts/dashboard/DashBoardLayout';
+import AuthLayout from '../layouts/authentification/AuthLayout';
 
 export const IndexPage = lazy(() => import('../pages/IndexPage'));
 export const LoginPage = lazy(() => import('../pages/LoginPage'));
@@ -22,46 +24,62 @@ export const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 // --------------------------------------------------------------------------------------
 
-const Router = () => {
-    const routes = useRoutes([
-        {
-            element: (
-                <DashBoardLayout>
-                    <Suspense>
-                        <Outlet />
-                    </Suspense>
-                </DashBoardLayout>
-            ),
-            children: [
-                {element: <IndexPage />, index: true},
-                {path: 'hearth', element: <HearthPage />},
-                {path: 'lung', element: <LungPage />},
-                {
-                    path: 'users',
-                    children: [
-                        { element: <UsersPage />, index: true },
-                        // { path: 'list', element: <UsersListPage /> },
-                        // { path: 'edit', element: <UsersEditPage /> },
-                    ],
-                },
-                
-            ],
-        },
-        {
-            path: 'login',
-            element: <LoginPage />,
-        }, 
-        {
-            path: 'not-found',
-            element: <NotFoundPage />,
-        },
-        {
-            path: '*',
-            element: <Navigate to="/not-found" replace />,
-        }
-    ])
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? children : <Navigate to="/login" replace />;
+};
 
-    return routes;
-}
+const Router = () => {
+  const routes = useRoutes([
+    {
+      element: (
+        <ProtectedRoute>
+          <DashBoardLayout>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </DashBoardLayout>
+        </ProtectedRoute>
+      ),
+      children: [
+        { element: <IndexPage />, index: true },
+        { path: 'hearth', element: <HearthPage /> },
+        { path: 'lung', element: <LungPage /> },
+        {
+          path: 'users',
+          children: [
+            { element: <UsersPage />, index: true },
+            // { path: 'list', element: <UsersListPage /> },
+            // { path: 'edit', element: <UsersEditPage /> },
+          ],
+        },
+      ],
+    },
+    {
+      path: 'login',
+      element: (
+        <AuthLayout>
+          <Suspense>
+            <LoginPage />
+          </Suspense>
+        </AuthLayout>
+      ),
+    },
+    {
+      path: 'not-found',
+      element: (
+        <Suspense>
+          <NotFoundPage />
+        </Suspense>
+      ),
+    },
+    {
+      path: '*',
+      element: <Navigate to="/not-found" replace />,
+    },
+  ]);
+
+  return routes;
+};
 
 export default Router;
