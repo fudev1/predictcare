@@ -1,38 +1,38 @@
-import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { Link } from 'react-router-dom';
+import {
+  Button,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+
+import { Link } from "react-router-dom";
+import { navLinks } from "../routes/nav-links";
+import { useState } from "react";
 
 export default function Nav() {
-    
-    
+  const [open, setOpen] = useState(false);
 
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
 
-    return (
-        <>
-            <nav style={{ marginTop: '100px' }}>
-                <ul>
-                    <li><Link to="/">Dashboard</Link></li>
-                    <li><Link to="/heart">Heart</Link></li>
-                    <li><Link to="/lung">Lung</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                </ul>
-            </nav>
-            
-            <Drawer anchor='left' open={false} >
-                <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-        </>
-    )
+  return (
+    <>
+      <Button sx={{ m: 34 }} onClick={toggleDrawer(true)}>
+        Open
+      </Button>
+
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
+        <List>
+          {navLinks.map((link) => (
+            <ListItemButton key={link.title} component={Link} to={link.path}>
+              <link.icon />
+              <ListItemText primary={link.title} />
+            </ListItemButton>
+          ))}
+        </List>
+      </Drawer>
+    </>
+  );
 }

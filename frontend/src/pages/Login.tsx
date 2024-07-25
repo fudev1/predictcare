@@ -1,5 +1,17 @@
+import { Box } from "@mui/material";
+
 export default function Login() {
-    return (
-        <div>PAGE Login</div>
-    )
+  return (
+    <Box
+      sx={{
+        width: "300px",
+        height: "300px",
+        display: "flex",
+        margin: "auto",
+        alignItems: "center",
+      }}
+    >
+      PAGE Heart
+    </Box>
+  );
 }
